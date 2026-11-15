@@ -19,10 +19,19 @@ jobs:
           java-version: '17'
           distribution: temurin
 
+      - name: Find ZIP
+        run: |
+          echo "ZIPs encontrados:"
+          find .github -maxdepth 1 -type f -name "*.zip" -print
+
       - name: Extract project
         run: |
-          unzip -o .github/HoloAimPanel.zip
-          
+          unzip -o .github/*.zip
+
+      - name: Show project files
+        run: |
+          find . -maxdepth 3 -type f | head -100
+
       - name: Build APK
         working-directory: HoloAimPanel
         run: |
