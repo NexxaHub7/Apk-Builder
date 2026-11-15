@@ -19,22 +19,20 @@ jobs:
           java-version: '17'
           distribution: temurin
 
-      - name: Find ZIP
-        run: |
-          echo "ZIPs encontrados:"
-          find .github -maxdepth 1 -type f -name "*.zip" -print
-
-      - name: Extract project
+      - name: Extract ZIP
         run: |
           unzip -o .github/*.zip
 
-      - name: Show project files
+      - name: Find Gradle project
         run: |
-          find . -maxdepth 3 -type f | head -100
+          echo "Buscando gradlew..."
+          find . -name gradlew -type f
 
       - name: Build APK
-        working-directory: HoloAimPanel
         run: |
+          PROJECT_DIR=$(dirname "$(find . -name gradlew -type f | head -1)")
+          echo "Proyecto encontrado en: $PROJECT_DIR"
+          cd "$PROJECT_DIR"
           chmod +x gradlew
           ./gradlew assembleDebug
 
@@ -42,4 +40,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: HoloAimPanel-debug
-          path: HoloAimPanel/app/build/outputs/apk/debug/*.apk
+          path: '**/app/build/outputs/apk/debug/*.apk'
