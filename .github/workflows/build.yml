@@ -19,7 +19,12 @@ jobs:
           java-version: '17'
           distribution: temurin
 
+      - name: Extract project
+        run: |
+          unzip -o .github/HoloAimPanel.zip
+          
       - name: Build APK
+        working-directory: HoloAimPanel
         run: |
           chmod +x gradlew
           ./gradlew assembleDebug
@@ -28,4 +33,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: HoloAimPanel-debug
-          path: app/build/outputs/apk/debug/*.apk
+          path: HoloAimPanel/app/build/outputs/apk/debug/*.apk
