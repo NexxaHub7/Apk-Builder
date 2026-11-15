@@ -19,9 +19,18 @@ jobs:
           java-version: '17'
           distribution: temurin
 
-      - name: Extract ZIP
+      - name: Install Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Extract project
         run: |
+          mkdir project
           unzip -o .github/*.zip -d project
+
+      - name: Generate Gradle Wrapper
+        working-directory: project
+        run: |
+          gradle wrapper --gradle-version 8.13
 
       - name: Build APK
         working-directory: project
